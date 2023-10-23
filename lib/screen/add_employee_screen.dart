@@ -1,3 +1,4 @@
+import 'package:baza_praconikow/widget/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
@@ -32,19 +33,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextFormField(
-              controller: _controller,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Employee Name')
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Name cant't be empty";
-                }
-              },
-            )
+            CustomTextFormField(controller: _controller, txtLabel: 'Employee name',),
+            const SizedBox(height: 8.0,),
           ],
         ),
       ),
