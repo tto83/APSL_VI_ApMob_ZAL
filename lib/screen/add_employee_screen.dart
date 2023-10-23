@@ -42,11 +42,56 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             const SizedBox(height: 8.0,),
             CustomTextFormField(controller: _lastNameController, txtLabel: 'Last name',),
             const SizedBox(height: 8.0,),
-            CustomTextFormField(controller: _dobController, txtLabel: 'Date of birth',),
+            TextFormField(
+              controller: _dobController,
+              keyboardType: TextInputType.name,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text('Date of birth')
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                return "Date cant't be empty";
+                }
+                  return null;
+              },
+              
+              onTap: () => pickDOB(context),
+              
+              ),
             const SizedBox(height: 8.0,),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> pickDOB(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(DateTime.now().year - 100),
+      lastDate: DateTime(DateTime.now().year + 1),
+      builder: (context, child) => Theme(
+        data: ThemeData().copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: Colors.pink,
+            onPrimary: Colors.white,
+            onSurface: Colors.black
+          ),
+          dialogBackgroundColor: Colors.white,
+        ),
+        child: child ?? const Text(''),
+      )
+    );
+
+    if(newDate == null) {
+      return;
+    }
+
+    setState(() {
+      _dobController.text = newDate.toIso8601String();
+    });
+
   }
 }
