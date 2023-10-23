@@ -1,5 +1,6 @@
 import 'package:baza_praconikow/widget/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -90,7 +91,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     }
 
     setState(() {
-      _dobController.text = newDate.toIso8601String();
+      String dob = DateFormat('dd/MM/yyyy').format(newDate);
+      _dobController.text = dob;
     });
 
   }
