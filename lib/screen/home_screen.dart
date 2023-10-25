@@ -18,6 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _db = AppDb();
   }
 
+  @override
+  void dispose() {
+    _db.close();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
