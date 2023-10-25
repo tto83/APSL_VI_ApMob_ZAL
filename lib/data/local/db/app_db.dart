@@ -1,3 +1,4 @@
+//import 'dart:html';
 import 'dart:io';
 
 import 'package:baza_praconikow/data/local/entity/employee_entity.dart';
@@ -27,5 +28,30 @@ class AppDb extends _$AppDb {
 
     @override
     int get schemaVersion => 1;
+
+
+    //pobierz liste pracownikow
+    Future<List<EmployeeData>> getEmployees() async {
+      return await select(employee).get();
+    }
+
+    //pobierz pojedynczego pracownika
+    Future<EmployeeData>getEmployee(int id) async {
+      return await (select(employee)..where((tbl) => tbl.id.equals(id))).getSingle();
+    }
+
+
+    Future<bool> updateEmployee(EmployeeCompanion entity) async {
+      return await update(employee).replace(entity);
+    }
+
+
+    Future<int> insertEmployee(EmployeeCompanion entity) async {
+      return await into(employee).insert(entity);
+    }
+
+    Future<int> deleteEmployee(int id) async {
+      return await (delete(employee)..where((tbl) => tbl.id.equals(id))).go();
+    }
 
 }
