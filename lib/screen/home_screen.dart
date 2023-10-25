@@ -1,7 +1,23 @@
+import 'package:baza_praconikow/data/local/db/app_db.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  late AppDb _db;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDb();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +27,45 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
       ),
 
-      body: const Column (
-        children: [
+      body: FutureBuilder<List<EmployeeData>>(
+        future: _db.getEmployees(),
+        builder: (context, snapshot) {
+          final List<EmployeeData>? employees = snapshot.data;
 
-        ],
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+
+          if (employees != null) {
+            return ListView.builder(
+              itemCount: employees.length,
+              itemBuilder: (context, index) {
+                final employee = employees[index];
+
+                return Card(
+                  child: Column(children: [
+                    Text(employee.id.toString()),
+                    Text(employee.userName.toString()),
+                    Text(employee.firstName.toString()),
+                    Text(employee.lastName.toString()),
+                    Text(employee.dateOfBirth.toString())
+                  ],)
+                );
+              }
+              );
+          }
+
+          return const Text('Database empty');
+
+        },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
