@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
       ),
 
-      body: Column (
+      body: const Column (
         children: [
 
         ],

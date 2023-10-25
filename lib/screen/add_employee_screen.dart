@@ -1,3 +1,4 @@
+import 'package:baza_praconikow/widget/custom_date_picker_form_field.dart';
 import 'package:baza_praconikow/widget/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
+  DateTime? _dateOfBirth;
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +45,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             const SizedBox(height: 8.0,),
             CustomTextFormField(controller: _lastNameController, txtLabel: 'Last name',),
             const SizedBox(height: 8.0,),
-            TextFormField(
-              controller: _dobController,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Date of birth')
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                return "Date cant't be empty";
-                }
-                  return null;
-              },
-              
-              onTap: () => pickDOB(context),
-              
-              ),
+            CustomDatePickerFormField(controller: _dobController, txtLabel: 'Date of birth', callback: () {
+              pickDOB(context);
+            }),
             const SizedBox(height: 8.0,),
           ],
         ),
@@ -70,7 +58,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   Future<void> pickDOB(BuildContext context) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(context: context,
-      initialDate: initialDate,
+      initialDate: _dateOfBirth ?? initialDate,
       firstDate: DateTime(DateTime.now().year - 100),
       lastDate: DateTime(DateTime.now().year + 1),
       builder: (context, child) => Theme(
@@ -91,6 +79,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     }
 
     setState(() {
+      _dateOfBirth = newDate;
       String dob = DateFormat('dd/MM/yyyy').format(newDate);
       _dobController.text = dob;
     });
