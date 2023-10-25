@@ -1,5 +1,5 @@
 import 'package:baza_praconikow/route/route_generator.dart';
-import 'package:baza_praconikow/screen/home_screen.dart';
+//import 'package:baza_praconikow/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Baza Pracownikow',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
