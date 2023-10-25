@@ -1,7 +1,10 @@
+
+import 'package:baza_praconikow/data/local/db/app_db.dart';
 import 'package:baza_praconikow/widget/custom_date_picker_form_field.dart';
 import 'package:baza_praconikow/widget/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:drift/drift.dart' as drift;
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -11,12 +14,18 @@ class AddEmployeeScreen extends StatefulWidget {
 }
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
-
+  late AppDb _db;
   final TextEditingController _employeeNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   DateTime? _dateOfBirth;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDb();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +36,25 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              //TODO
-              //funkcja dodania do bazy
+              final entity = EmployeeCompanion(
+                userName: drift.Value(_employeeNameController.text),
+                firstName: drift.Value(_firstNameController.text),
+                lastName: drift.Value(_lastNameController.text),
+                dateOfBirth: drift.Value(_dateOfBirth!),
+      
+              );
+
+              _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+                MaterialBanner(
+                  backgroundColor: Colors.pink,
+                  content: Text('New employee saved: $value', style: const TextStyle(color: Colors.white)),
+                  actions: [
+                    TextButton(
+                      onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                      child: const Text('[X]', style: TextStyle(color: Colors.white)))
+                  ],
+                ),
+              ));
             },
             icon: const Icon(Icons.save)
             )

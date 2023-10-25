@@ -7,11 +7,11 @@ class CustomDatePickerFormField extends StatelessWidget {
   final VoidCallback _callback;
   
   const CustomDatePickerFormField({
-    super.key,
+    Key? key,
     required TextEditingController controller,
     required String txtLabel,
     required VoidCallback callback
-    }) : _controller = controller, _txtLabel = txtLabel, _callback = callback;
+    }) : _controller = controller, _txtLabel = txtLabel, _callback = callback, super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class CustomDatePickerFormField extends StatelessWidget {
           return null;
       },
       
-      onTap: () => _callback,
+      onTap: _callback,
       
     );
   }
