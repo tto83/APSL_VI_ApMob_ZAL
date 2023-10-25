@@ -28,6 +28,16 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   }
 
   @override
+  void dispose() {
+    _db.close();
+    _employeeNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _dobController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,25 +46,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              final entity = EmployeeCompanion(
-                userName: drift.Value(_employeeNameController.text),
-                firstName: drift.Value(_firstNameController.text),
-                lastName: drift.Value(_lastNameController.text),
-                dateOfBirth: drift.Value(_dateOfBirth!),
-      
-              );
-
-              _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
-                MaterialBanner(
-                  backgroundColor: Colors.pink,
-                  content: Text('New employee saved: $value', style: const TextStyle(color: Colors.white)),
-                  actions: [
-                    TextButton(
-                      onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-                      child: const Text('[X]', style: TextStyle(color: Colors.white)))
-                  ],
-                ),
-              ));
+              addEmployee();
             },
             icon: const Icon(Icons.save)
             )
@@ -111,4 +103,27 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     });
 
   }
+
+  void addEmployee() {
+    final entity = EmployeeCompanion(
+      userName: drift.Value(_employeeNameController.text),
+      firstName: drift.Value(_firstNameController.text),
+      lastName: drift.Value(_lastNameController.text),
+      dateOfBirth: drift.Value(_dateOfBirth!),
+
+    );
+
+    _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        backgroundColor: Colors.pink,
+        content: Text('New employee saved: $value', style: const TextStyle(color: Colors.white)),
+        actions: [
+          TextButton(
+            onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            child: const Text('[X]', style: TextStyle(color: Colors.white)))
+        ],
+      ),
+    ));
+  }
+
 }
