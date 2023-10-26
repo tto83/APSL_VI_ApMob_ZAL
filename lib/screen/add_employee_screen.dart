@@ -15,6 +15,7 @@ class AddEmployeeScreen extends StatefulWidget {
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   late AppDb _db;
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _employeeNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -57,16 +58,24 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            CustomTextFormField(controller: _employeeNameController, txtLabel: 'Employee name',),
-            const SizedBox(height: 8.0,),
-            CustomTextFormField(controller: _firstNameController, txtLabel: 'First name',),
-            const SizedBox(height: 8.0,),
-            CustomTextFormField(controller: _lastNameController, txtLabel: 'Last name',),
-            const SizedBox(height: 8.0,),
-            CustomDatePickerFormField(controller: _dobController, txtLabel: 'Date of birth', callback: () {
-              pickDOB(context);
-            }),
-            const SizedBox(height: 8.0,),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomTextFormField(controller: _employeeNameController, txtLabel: 'Employee name',),
+                  const SizedBox(height: 8.0,),
+                  CustomTextFormField(controller: _firstNameController, txtLabel: 'First name',),
+                  const SizedBox(height: 8.0,),
+                  CustomTextFormField(controller: _lastNameController, txtLabel: 'Last name',),
+                  const SizedBox(height: 8.0,),
+                  CustomDatePickerFormField(controller: _dobController, txtLabel: 'Date of birth', callback: () {
+                    pickDOB(context);
+                  }),
+                  const SizedBox(height: 8.0,),
+                ],
+              )
+            ),
+            
           ],
         ),
       ),
@@ -105,25 +114,28 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   }
 
   void addEmployee() {
-    final entity = EmployeeCompanion(
-      userName: drift.Value(_employeeNameController.text),
-      firstName: drift.Value(_firstNameController.text),
-      lastName: drift.Value(_lastNameController.text),
-      dateOfBirth: drift.Value(_dateOfBirth!),
+    final isValid = _formKey.currentState?.validate();
 
-    );
+    if (isValid != null && isValid) {
+      final entity = EmployeeCompanion(
+        userName: drift.Value(_employeeNameController.text),
+        firstName: drift.Value(_firstNameController.text),
+        lastName: drift.Value(_lastNameController.text),
+        dateOfBirth: drift.Value(_dateOfBirth!),
+      );
 
-    _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
-      MaterialBanner(
-        backgroundColor: Colors.pink,
-        content: Text('New employee saved: $value', style: const TextStyle(color: Colors.white)),
-        actions: [
-          TextButton(
-            onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: const Text('[X]', style: TextStyle(color: Colors.white)))
-        ],
-      ),
-    ));
+      _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+        MaterialBanner(
+          backgroundColor: Colors.pink,
+          content: Text('New employee saved: $value', style: const TextStyle(color: Colors.white)),
+          actions: [
+            TextButton(
+              onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+              child: const Text('[X]', style: TextStyle(color: Colors.white)))
+          ],
+        ),
+      ));
+    }
   }
 
 }
