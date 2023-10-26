@@ -56,7 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 final employee = employees[index];
 
-                return Card(
+                return GestureDetector( 
+                  onTap:  () {
+                    Navigator.pushNamed(context, '/edit_employee', arguments: employee.id);
+                  },
+                  child: Card(
                   //color: Colors.grey.shade400,
                   shape: const RoundedRectangleBorder(
                     side: BorderSide(
@@ -81,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(employee.dateOfBirth.toString(), style: const TextStyle(color: Colors.black),)
                       ],),
                   )
-                );
+                ),);
               }
               );
           }
