@@ -58,7 +58,13 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
               editEmployee();
             },
             icon: const Icon(Icons.save)
-            )
+            ),
+            IconButton(
+            onPressed: () {
+              deleteEmployee();
+            },
+            icon: const Icon(Icons.delete)
+            ),
         ],
       ),
 
@@ -135,6 +141,22 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       ),
     ));
   }
+
+  void deleteEmployee() {
+    _db.deleteEmployee(widget.id).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        backgroundColor: Colors.pink,
+        content: Text('Employee deleted: $value', style: const TextStyle(color: Colors.white)),
+        actions: [
+          TextButton(
+            onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            child: const Text('[X]', style: TextStyle(color: Colors.white)))
+        ],
+      ),
+      ),
+    );
+  }
+  
 
   Future<void> getEmployee() async {
     _employeeData = await _db.getEmployee(widget.id);
