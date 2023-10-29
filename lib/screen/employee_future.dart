@@ -28,10 +28,12 @@ class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: const Text('Employee future'),
         centerTitle: true,
       ),
+      
 
       body: FutureBuilder<List<EmployeeData>>(
         future: _db.getEmployees(),

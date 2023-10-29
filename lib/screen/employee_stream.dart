@@ -28,10 +28,12 @@ class _EmployeeStreamScreenState extends State<EmployeeStreamScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: const Text('Employee stream'),
         centerTitle: true,
       ),
+      
 
       body: FutureBuilder<List<EmployeeData>>(
         future: _db.getEmployees(),
