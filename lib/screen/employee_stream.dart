@@ -1,6 +1,5 @@
 import 'package:baza_praconikow/data/local/db/app_db.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EmployeeStreamScreen extends StatefulWidget {
   const EmployeeStreamScreen({super.key});
@@ -11,17 +10,17 @@ class EmployeeStreamScreen extends StatefulWidget {
 
 class _EmployeeStreamScreenState extends State<EmployeeStreamScreen> {
 
-  //late AppDb _db;
+  late AppDb _db;
 
   @override
   void initState() {
     super.initState();
-    //_db = AppDb();
+    _db = AppDb();
   }
 
   @override
   void dispose() {
-    //_db.close();
+    _db.close();
     super.dispose();
   }
 
@@ -36,8 +35,8 @@ class _EmployeeStreamScreenState extends State<EmployeeStreamScreen> {
       ),
       
 
-      body: StreamBuilder<List<EmployeeData>>(
-        stream: Provider.of<AppDb>(context).getEmployeeStream(),
+      body: FutureBuilder<List<EmployeeData>>(
+        future: _db.getEmployees(),
         builder: (context, snapshot) {
           final List<EmployeeData>? employees = snapshot.data;
 

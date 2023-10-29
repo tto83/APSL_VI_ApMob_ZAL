@@ -1,6 +1,5 @@
 import 'package:baza_praconikow/data/local/db/app_db.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EmployeeFutureScreen extends StatefulWidget {
   const EmployeeFutureScreen({super.key});
@@ -11,17 +10,17 @@ class EmployeeFutureScreen extends StatefulWidget {
 
 class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
 
-  //late AppDb _db;
+  late AppDb _db;
 
   @override
   void initState() {
     super.initState();
-    //_db = AppDb();
+    _db = AppDb();
   }
 
   @override
   void dispose() {
-    //_db.close();
+    _db.close();
     super.dispose();
   }
 
@@ -37,7 +36,7 @@ class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
       
 
       body: FutureBuilder<List<EmployeeData>>(
-        future: Provider.of<AppDb>(context).getEmployees(),
+        future: _db.getEmployees(),
         builder: (context, snapshot) {
           final List<EmployeeData>? employees = snapshot.data;
 

@@ -1,17 +1,9 @@
-import 'package:baza_praconikow/data/local/db/app_db.dart';
 import 'package:baza_praconikow/route/route_generator.dart';
 //import 'package:baza_praconikow/screen/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  Provider(
-    create: (context) => AppDb(),
-    child: const MyApp(),
-    dispose: (context, AppDb db) => db.close(),
-  );
-  //runApp(const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
