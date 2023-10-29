@@ -21,6 +21,7 @@ class EditEmployeeScreen extends StatefulWidget {
 
 class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   late AppDb _db;
+  final _formKey = GlobalKey<FormState>();
   late EmployeeData _employeeData;
   final TextEditingController _employeeNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -72,16 +73,24 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            CustomTextFormField(controller: _employeeNameController, txtLabel: 'Employee name',),
-            const SizedBox(height: 8.0,),
-            CustomTextFormField(controller: _firstNameController, txtLabel: 'First name',),
-            const SizedBox(height: 8.0,),
-            CustomTextFormField(controller: _lastNameController, txtLabel: 'Last name',),
-            const SizedBox(height: 8.0,),
-            CustomDatePickerFormField(controller: _dobController, txtLabel: 'Date of birth', callback: () {
-              pickDOB(context);
-            }),
-            const SizedBox(height: 8.0,),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomTextFormField(controller: _employeeNameController, txtLabel: 'Employee name',),
+                  const SizedBox(height: 8.0,),
+                  CustomTextFormField(controller: _firstNameController, txtLabel: 'First name',),
+                  const SizedBox(height: 8.0,),
+                  CustomTextFormField(controller: _lastNameController, txtLabel: 'Last name',),
+                  const SizedBox(height: 8.0,),
+                  CustomDatePickerFormField(controller: _dobController, txtLabel: 'Date of birth', callback: () {
+                    pickDOB(context);
+                  }),
+                  const SizedBox(height: 8.0,),
+                ],
+              )
+            ),
+            
           ],
         ),
       ),
@@ -120,7 +129,9 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   }
 
   void editEmployee() {
-    final entity = EmployeeCompanion(
+    final isValid = _formKey.currentState?.validate();
+    if (isValid != null && isValid) {
+      final entity = EmployeeCompanion(
       id: drift.Value(widget.id),
       userName: drift.Value(_employeeNameController.text),
       firstName: drift.Value(_firstNameController.text),
@@ -140,6 +151,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         ],
       ),
     ));
+    }
+    
   }
 
   void deleteEmployee() {
