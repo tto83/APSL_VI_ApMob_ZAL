@@ -5,6 +5,7 @@ import 'package:baza_praconikow/widget/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:provider/provider.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -14,7 +15,7 @@ class AddEmployeeScreen extends StatefulWidget {
 }
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
-  late AppDb _db;
+  //late AppDb _db;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _employeeNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -25,12 +26,12 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   @override
   void initState() {
     super.initState();
-    _db = AppDb();
+    //_db = AppDb();
   }
 
   @override
   void dispose() {
-    _db.close();
+    //_db.close();
     _employeeNameController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
@@ -124,7 +125,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         dateOfBirth: drift.Value(_dateOfBirth!),
       );
 
-      _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+      Provider.of<AppDb>(context).insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
         MaterialBanner(
           backgroundColor: Colors.pink,
           content: Text('New employee saved: $value', style: const TextStyle(color: Colors.white)),

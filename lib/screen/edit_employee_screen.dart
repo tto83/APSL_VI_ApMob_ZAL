@@ -5,6 +5,7 @@ import 'package:baza_praconikow/widget/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:provider/provider.dart';
 
 class EditEmployeeScreen extends StatefulWidget {
 
@@ -20,7 +21,7 @@ class EditEmployeeScreen extends StatefulWidget {
 }
 
 class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
-  late AppDb _db;
+  //late AppDb _db;
   final _formKey = GlobalKey<FormState>();
   late EmployeeData _employeeData;
   final TextEditingController _employeeNameController = TextEditingController();
@@ -32,14 +33,14 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   @override
   void initState() {
     super.initState();
-    _db = AppDb();
+    //_db = AppDb();
     // _employeeData = _db.getEmployee(widget.id);
     getEmployee();
   }
 
   @override
   void dispose() {
-    _db.close();
+    //_db.close();
     _employeeNameController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
@@ -140,7 +141,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
 
     );
 
-    _db.updateEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+    Provider.of<AppDb>(context).updateEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
         backgroundColor: Colors.pink,
         content: Text('Employee updated: $value', style: const TextStyle(color: Colors.white)),
@@ -156,7 +157,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   }
 
   void deleteEmployee() {
-    _db.deleteEmployee(widget.id).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+    Provider.of<AppDb>(context).deleteEmployee(widget.id).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
         backgroundColor: Colors.pink,
         content: Text('Employee deleted: $value', style: const TextStyle(color: Colors.white)),
@@ -172,7 +173,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   
 
   Future<void> getEmployee() async {
-    _employeeData = await _db.getEmployee(widget.id);
+    _employeeData = await Provider.of<AppDb>(context).getEmployee(widget.id);
     _employeeNameController.text = _employeeData.userName;
     _firstNameController.text = _employeeData.firstName;
     _lastNameController.text = _employeeData.lastName;
