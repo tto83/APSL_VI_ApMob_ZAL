@@ -1,17 +1,16 @@
 import 'package:baza_praconikow/data/local/db/app_db.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class EmployeeFutureScreen extends StatefulWidget {
+  const EmployeeFutureScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<EmployeeFutureScreen> createState() => _EmployeeFutureScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
 
   late AppDb _db;
-  int index = 0;
 
   @override
   void initState() {
@@ -30,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Employee future'),
         centerTitle: true,
       ),
 
@@ -95,38 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, '/add_employee');
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Add employee')),
-
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: index,
-          onTap: (value) {
-            setState(() {
-              index = value;
-            });
-          },
-          backgroundColor: Colors.blue.shade300,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white30,
-          showSelectedLabels: false,
-          showUnselectedLabels: true,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              activeIcon: Icon(Icons.list_outlined),
-              label: 'Employee Future'
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              activeIcon: Icon(Icons.list_outlined),
-              label: 'Employee Stream'
-            ),
-          ],
-          ),
+       
     );
   }
 }
